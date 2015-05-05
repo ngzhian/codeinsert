@@ -1,0 +1,54 @@
+CodeInsert
+==========
+
+A utility to help insert code snippets into your markdown blog posts.
+
+Example
+-------
+
+You have a blogpost, `input.mdown` that has these content:
+
+    Which delegates work to `AbstractCommandLineRunner`'s `run()` method
+
+    `@AbstractCommandLineRunner.java#L397-403`
+
+    Which then hands off to `doRun()`
+
+CodeInsert transforms this to
+
+    Which delegates work to `AbstractCommandLineRunner`'s `run()` method
+
+    ```java
+    public final void run() {
+        int result = 0;
+        int runs = 1;
+        try {
+        for (int i = 0; i < runs && result == 0; i++) {
+            result = doRun();
+        }
+    ```
+    `@AbstractCommandLineRunner.java#L397-403`
+
+    Which then hands off to `doRun()`
+
+The command to do this is
+
+```bash
+python codeinsert.py input.mdown output.mdown
+```
+
+The catch is that you have need to have the package locally beside `codeinsert.py` as
+the search for the files begins in the directory `codeinsert.py` is located.
+
+How it works
+------------
+
+The script looks for a line that looks like a usual markdown code element, for example
+`@AbstractCommandLineRunner.java#L397-403`. It uses the `@` symbol to distinguise a normal code
+element from a file name that needs to be looked up.
+
+The file name must exist in a directory that `codeinsert.py` is in. A recursive will then lookup
+a file of that name, the first file that is found is used.
+
+The `#l397-403` specifies the line number range to pull code from. This is similar to the
+url used on GitHub.
