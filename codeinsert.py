@@ -55,6 +55,7 @@ def expand_insertion(line, line_no):
     # add the backticks
     lines.insert(0, '```%s\n' % ext)
     lines.append('```\n')
+    lines.append(line)
 
     return lines
 
